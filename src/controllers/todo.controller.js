@@ -37,6 +37,44 @@ export async function createTodo(req, res, next) {
 export async function listTodos(req, res, next) {
   try {
     // Your code here
+    let {page = 1, limit = 10, completed, priority,search} = req.query;
+    page = parseInt(page);
+    limit = parseInt(limit);
+
+    const filter = {};
+   
+    if (completed !== undefined) {
+      filter.completed = completed === "true";
+    }
+
+    if (priority) {
+      filter.priority = priority;
+    }
+
+    if (search) {
+      filter.title = { $regex: search, $options: "i" };
+    }
+
+    const skip = (page - 1)*limit;
+    const total = await Todo.countDocuments(filter); 
+      const data = await Todo.find(filter) 
+      .sort({ createdAt: -1 })
+      .skip(skip)   
+      .limit(limit); 
+
+    // 5. Calculate total pages
+    const pages = Math.ceil(total / limit);
+
+    return res.status(200).json({
+      data,
+      meta:{
+        total, 
+        page, 
+        limit, 
+        pages
+      }
+    })
+
   } catch (error) {
     next(error);
   }
