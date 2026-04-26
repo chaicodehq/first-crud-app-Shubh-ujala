@@ -9,7 +9,21 @@ import { Todo } from "../models/todo.model.js";
 export async function createTodo(req, res, next) {
   try {
     // Your code here
+    const { title, priority, completed, tags, dueDate } = req.body;
+
+    const todo = await Todo.create({
+      title,
+      priority,
+      completed,
+      tags,
+      dueDate,
+    });
+    return res.status(201).json(todo);
   } catch (error) {
+    return res.status(400).json({
+      error: { message: error.message },
+    });
+
     next(error);
   }
 }

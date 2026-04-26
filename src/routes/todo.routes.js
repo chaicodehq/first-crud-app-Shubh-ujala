@@ -23,5 +23,6 @@ const router = express.Router();
  */
 
 // Your routes here
+router.post('/',createTodo);
 
 export default router;

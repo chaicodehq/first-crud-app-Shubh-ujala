@@ -27,5 +27,5 @@ export function createApp() {
 
   app.use('/api/todos',todoRoutes);
   app.use(errorHandler);
-// return app;
+  return app;
 }
