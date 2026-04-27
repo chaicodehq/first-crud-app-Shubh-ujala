@@ -140,7 +140,7 @@ export async function updateTodo(req, res, next) {
   } catch (error) {
     if (error.name === "ValidationError") {
       return res.status(400).json({
-        error: { message: error.message }
+      error: { message: error.message }
       });
     }
     next(error);
